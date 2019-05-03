@@ -22,18 +22,18 @@ processed_hashes = []
 url = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n={}&mkt={}'
 home = os.path.expanduser('~')
 folder_path = '{}/{}'.format(home, PATH)
-existing_files = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
 
-for file_name in existing_files:
-    full_file_path = '{}{}'.format(folder_path, file_name)
-    file = open(full_file_path, 'rb')
-    md5 = get_md5(file.read())
-    if md5 in processed_hashes:
-        print('Removed file {}'.format(file_name))
-        os.remove(full_file_path)
-    else:
-        processed_hashes.append(md5)
-    file.close()
+for file_name in os.listdir(folder_path):
+    if os.path.isfile(os.path.join(folder_path, file_name)):
+        full_file_path = '{}{}'.format(folder_path, file_name)
+        file = open(full_file_path, 'rb')
+        md5 = get_md5(file.read())
+        if md5 in processed_hashes:
+            print('Removed file {}'.format(file_name))
+            os.remove(full_file_path)
+        else:
+            processed_hashes.append(md5)
+        file.close()
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0',
